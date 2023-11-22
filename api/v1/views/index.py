@@ -1,16 +1,16 @@
 #!/usr/bin/python3
-"""Returns JSON status"""
+"""Returns JSON status/ENDPOINTS"""
 from api.v1.views import app_views
 from models import storage
 from flask import jsonify
 
 
-@app_views.route('/status', methods=['GET'], strict_slashes=False)
+@app_views.route('/status', methods=['GET'])
 def json_status():
-    return jsonify(status="OK")
+    return jsonify({"status": "OK"})
 
 
-@app_views.route('/status', methods=['GET'], strict_slashes=False)
+@app_views.route('/stats', methods=['GET'])
 def get_stats():
     stats = {
         "amenities": storage.count("Amenity"),
