@@ -6,6 +6,8 @@ amenities API blueprint module
 from api.v1.views import app_views
 from flask import jsonify, abort, request
 from models.amenities import Amenity
+from models.state import State
+from models.city import City
 from models import storage
 
 
@@ -20,9 +22,9 @@ def get_amenity(amenity_id=None):
         amenities = [value.to_dict() for key, value in amenity.items()]
         return jsonify(amenities)
     amenities = storage.get('Amenity', amenity_id)
-    if amenities is not None:
-        return jsonify(amenities.to_dict())
-    abort(404)
+    if amenities is None:
+        abort(404)
+    return jsonify(amenities.to_dict())
 
 
 @app_views.route('/amenities/<amenity_id>', methods=['DELETE'], strict_slashes=False)
@@ -33,8 +35,7 @@ def delete_amenity(a_id):
     amenity_d = storage.get('Amenity', a_id)
     if amenity_d is None:
         abort(404)
-    storage.delete(amenity_d)
-    storage.save()
+    amenity_d.delete()
     return (jsonify({}))
 
 
@@ -49,8 +50,8 @@ def make_amenity():
     name = data.get('name')
     if name is None:
         return (jsonify({'error': 'Missing name'}), 400)
-    new_amenity = Amenity(**data)
-    new_amenity.save()
+    new_amenity = Amenity()
+    new_amenity.name()
     return (jsonify(new_amenity.to_dict()), 201)
 
 
