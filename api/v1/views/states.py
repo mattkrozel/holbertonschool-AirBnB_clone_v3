@@ -8,7 +8,6 @@ from flask import jsonify, abort, request
 from models.state import State
 from models import storage
 
-
 @app_views.route('/states', methods=['GET'], strict_slashes=False)
 @app_views.route('/states/<state_id>', methods=['GET'], strict_slashes=False)
 def get_state(state_id=None):
