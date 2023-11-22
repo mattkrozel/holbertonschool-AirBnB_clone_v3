@@ -5,7 +5,7 @@ users API blueprint module
 
 from api.v1.views import app_views
 from flask import jsonify, abort, request
-from models.users import User
+from models.user import User
 from models import storage
 
 @app_views.route('/users', methods=['GET'], strict_slashes=False)
