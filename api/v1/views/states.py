@@ -5,7 +5,7 @@ state API blueprint module
 
 from api.v1.views import app_views
 from flask import jsonify, abort, request
-from models import State
+from models.state import State
 from models import storage
 
 
