@@ -1,10 +1,12 @@
 #!/usr/bin/python3
 '''
-state blueprint
+state API blueprint module
 '''
+
 from api.v1.views import app_views
 from flask import jsonify, abort, request
-from models import State, storage
+from models import State
+from models import storage
 
 
 @app_views.route('/states', methods=['GET'], strict_slashes=False)
