@@ -2,6 +2,7 @@
 '''
 cities blueprint
 '''
+
 from api.v1.views import app_views
 from flask import jsonify, abort, request
 from models import City, State, storage
