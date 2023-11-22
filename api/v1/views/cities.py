@@ -5,8 +5,9 @@ cities blueprint
 
 from api.v1.views import app_views
 from flask import jsonify, abort, request
-from models import City, State, storage
-
+from models.state import State
+from models.city import City
+from models import storage
 
 @app_views.route('/states/<sid>/cities', methods=['GET'], strict_slashes=False)
 def city_state(sid):
