@@ -22,6 +22,7 @@ def get_state(state_id=None):
         return jsonify(states.to_dict())
     abort(404)
 
+
 @app_views.route('/states/<s_id>', methods=['DELETE'], strict_slashes=False)
 def delete_state(s_id):
     '''
@@ -34,10 +35,11 @@ def delete_state(s_id):
     storage.save()
     return (jsonify({}))
 
+
 @app_views.route('/states', methods=['POST'], strict_slashes=False)
 def make_state():
     '''
-    creates state
+    creates new state
     '''
     data = request.get_json()
     if data is None:
@@ -49,10 +51,11 @@ def make_state():
     new_state.save()
     return (jsonify(new_state.to_dict()), 201)
 
+
 @app_views.route('/states/<state_id>', methods=['PUT'], strict_slashes=False)
 def update_state(state_id):
     '''
-    updates state
+    updates specific state
     '''
     data = request.get_json()
     if data is None:
