@@ -10,29 +10,29 @@ from models.amenity import Amenity
 
 
 @app_views.route('/amenities', methods=['GET'], strict_slashes=False)
-@app_views.route('/amenities/<a_id>', methods=['GET'],
+@app_views.route('/amenities/<amenity_id>', methods=['GET'],
                  strict_slashes=False)
-def get_amenity(a_id=None):
+def get_amenity(amenity_id=None):
     '''
     gets list of amenities
     '''
-    if a_id is None:
+    if amenity_id is None:
         amenity = storage.all('Amenity')
         amenities = [value.to_dict() for key, value in amenity.items()]
         return jsonify(amenities)
-    amenities = storage.get('Amenity', a_id)
+    amenities = storage.get('Amenity', amenity_id)
     if amenities is None:
         abort(404)
     return jsonify(amenities.to_dict())
 
 
-@app_views.route('/amenities/<a_id>', methods=['DELETE'],
+@app_views.route('/amenities/<amenity_id>', methods=['DELETE'],
                  strict_slashes=False)
-def delete_amenity(a_id):
+def delete_amenity(amenity_id):
     '''
     deletes amenity based off id
     '''
-    amenity_d = storage.get('Amenity', a_id)
+    amenity_d = storage.get('Amenity', amenity_id)
     if amenity_d is None:
         abort(404)
     amenity_d.delete()
@@ -56,16 +56,16 @@ def make_amenity():
     return (jsonify(new_amenity.to_dict()), 201)
 
 
-@app_views.route('/amenities/<a_id>', methods=['PUT'],
+@app_views.route('/amenities/<amenity_id>', methods=['PUT'],
                  strict_slashes=False)
-def update_amenity(a_id):
+def update_amenity(amenity_id):
     '''
     updates specific amenity
     '''
     data = request.get_json()
     if data is None:
         return (jsonify({'error': 'Not a JSON'}), 400)
-    amenity = storage.get('Amenity', a_id)
+    amenity = storage.get('Amenity', amenity_id)
     if amenity is None:
         abort(404)
     disallowed = ['id', 'created_at', 'updated_at']
