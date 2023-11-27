@@ -25,7 +25,7 @@ def get_state(state_id=None):
     abort(404)
 
 
-@app_views.route('/states/<s_id>', methods=['DELETE'], strict_slashes=False)
+@app_views.route('/states/<state_id>', methods=['DELETE'], strict_slashes=False)
 def delete_state(s_id):
     '''
     deletes state based off id
