@@ -79,7 +79,8 @@ def make_place(city_id):
     return (jsonify(new_place.to_dict()), 201)
 
 
-@app_views.route('/places/<place_id>', methods=['PUT'], strict_slashes=False)
+@app_views.route('/places/<place_id>', methods=['PUT'],
+                 strict_slashes=False)
 def update_place(place_id):
     '''
     updates specific state
@@ -90,7 +91,8 @@ def update_place(place_id):
     info = storage.get_json()
     if info is None:
         return (jsonify({'error': 'Not a JSON'}), 400)
-    disallowed = ['id', 'user_id', 'city_id', 'created_at', 'updated_at']
+    disallowed = ['id', 'user_id', 'city_id', 'created_at',
+                  'updated_at']
     for key, value in info.items():
         if key not in disallowed:
             setattr(places, key, value)
