@@ -10,12 +10,13 @@ from models.state import State
 from models.city import City
 
 
-@app_views.route('/states/<sid>/cities', methods=['GET'], strict_slashes=False)
-def city_state(sid):
+@app_views.route('/states/<state_id>/cities', methods=['GET'],
+                 strict_slashes=False)
+def city_state(state_id):
     '''
     gets list of cities
     '''
-    states = storage.get('State', sid)
+    states = storage.get('State', state_id)
     if states is None:
         abort(404)
     cities = states.cities
@@ -23,7 +24,8 @@ def city_state(sid):
     return jsonify(final_cities)
 
 
-@app_views.route('/cities/<city_id>', methods=['GET'], strict_slashes=False)
+@app_views.route('/cities/<city_id>', methods=['GET'],
+                 strict_slashes=False)
 def get_city(city_id):
     '''
     gets city
@@ -34,19 +36,19 @@ def get_city(city_id):
     return jsonify(cities.to_dict())
 
 
-@app_views.route('/cities/<c_id>', methods=['DELETE'], strict_slashes=False)
-def cities(c_id):
+@app_views.route('/cities/<city_id>', methods=['DELETE'], strict_slashes=False)
+def cities(city_id):
     '''
     deletes city based off id
     '''
-    city_d = storage.get('City', c_id)
+    city_d = storage.get('City', city_id)
     if city_d is None:
         abort(404)
     storage.delete(city_d)
     return (jsonify({}))
 
 
-@app_views.route('/states/<id>/cities', methods=['POST'], strict_slashes=False)
+@app_views.route('/states/<state_id>/cities', methods=['POST'], strict_slashes=False)
 def post_city(id):
     '''
     posts specific city
