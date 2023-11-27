@@ -21,11 +21,11 @@ def get_user(user_id=None):
         return jsonify(users)
     users = storage.get('User', user_id)
     if users is not None:
-        return jsonify(users.to_dict(), 200)
+        return jsonify(users.to_dict())
     abort(404)
 
 
-@app_views.route('/users/<user>', methods=['DELETE'], strict_slashes=False)
+@app_views.route('/users/<user_id>', methods=['DELETE'], strict_slashes=False)
 def delete_user(u_id):
     '''
     deletes user based off id
@@ -33,8 +33,7 @@ def delete_user(u_id):
     user_d = storage.get('User', u_id)
     if user_d is None:
         abort(404)
-    storage.delete(user_d)
-    storage.save()
+    user_d.delete()
     return (jsonify({}))
 
 
@@ -46,12 +45,17 @@ def make_user():
     data = request.get_json()
     if data is None:
         return (jsonify({'error': 'Not a JSON'}), 400)
-    name = data.get('User')
-    if name is None:
-        return (jsonify({'error': 'Missing name'}), 400)
-    new_user = User(**data)
-    new_user.save()
-    return (jsonify(new_user.to_dict()), 201)
+    email = data.get('email')
+    if email is None:
+        return (jsonify({'error': 'Missing email'}), 400)
+    password = data.get('password')
+    if password is None:
+        return (jsonify({'error': 'Missing password'}), 400)  
+    new = User()
+    for key, value in data.items():
+        setattr(new, key, value)
+    new.save()
+    return (jsonify(new.to_dict()), 201)
 
 
 @app_views.route('/users/<user_id>', methods=['PUT'], strict_slashes=False)
@@ -67,7 +71,7 @@ def update_user(user_id):
         abort(404)
     disallowed = ['id', 'email', 'created_at', 'updated_at']
     for key, value in data.items():
-        if key in disallowed:
+        if key not in disallowed:
             setattr(user, key, value)
     user.save()
-    return jsonify(user.to_dict(), 200)
+    return jsonify(user.to_dict())
